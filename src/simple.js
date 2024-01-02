@@ -17,16 +17,7 @@ class SimpleEval {
         opt.expression = expression;
         try {
             opt?.interpolate && (expression = this.interpolate(expression, data));
-            // Replace logical operators for easier parsing
-            expression = expression
-                .replace(/&&/g, '&&')
-                .replace(/\|\|/g, '||')
-                .replace(/NOT/ig, '!')
-                .replace(/AND/ig, '&&')
-                .replace(/OR/ig, '||')
-                .replace(/distinct/ig, '!==')
-                .replace(/equal/ig, '===')
-                .replace(/!/g, '!');
+            expression = this.sanitize(expression);
             // Evaluate the expression using, this can be unsafe with untrusted input
             return this.evaluate(expression, data);
         }
@@ -35,6 +26,26 @@ class SimpleEval {
             console.log(error);
             return null;
         }
+    }
+
+    /**
+     * @description Escaped and sanitized to prevent injection of malicious code through string manipulation.
+     * @param {String} expression 
+     * @returns {String} expression
+     */
+    sanitize(expression) {
+        return expression
+            // Replace logical operators for easier parsing
+            .replace(/&&/g, '&&')
+            .replace(/\|\|/g, '||')
+            .replace(/!/g, '!')
+            // add suport for new operatos 
+            .replace(/NOT/ig, '!')
+            .replace(/AND/ig, '&&')
+            .replace(/OR/ig, '||')
+            .replace(/distinct/ig, '!==')
+            .replace(/equal/ig, '===')
+            ;
     }
 
     /**
