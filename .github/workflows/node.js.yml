@@ -36,9 +36,14 @@ jobs:
     # needs: test
     # if: github.ref == 'refs/heads/main'
     steps: 
-      - name: checkout
-        uses: actions/checkout@v2.1.1
-      - name: publish
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "12"
+      - run: npm ci
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v3
+        # https://github.com/marketplace/actions/npm-publish
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          registry: "https://npm.pkg.github.com"
