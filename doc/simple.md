@@ -1,9 +1,3 @@
-# Ksike Expression Evaluator
-
-```js
-const kseval = require ("kseval");
-```
-
 ## Evaluate JavaScript native expressions 
 
 ```js
@@ -28,13 +22,3 @@ console.log(
     kseval.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data) === true,
 );
 ```
-
-## Quick overview
-- [Simple Expression Evaluator.](doc/simple.md)
-- [Parser Expression Evaluator](doc/parser.md)
-
-
-
-
-
-
