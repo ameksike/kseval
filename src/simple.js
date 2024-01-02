@@ -1,10 +1,14 @@
 class SimpleEval {
+
     /**
      * @description Evaluate JavaScript native expressions 
      * @param {String} expression 
      * @param {Object} data 
      * @param {Object} opt 
      * @param {Object} opt.error 
+     * @param {Boolean} opt.interpolate DEFAULT [false]
+     * @param {Boolean} opt.destructuring DEFAULT [true]
+     * @param {String} opt.target DEFAULT [function], VALUES [function | eval]
      * @returns {Boolean} result
      */
     run(expression, data, opt = {}) {
@@ -23,8 +27,8 @@ class SimpleEval {
                 .replace(/distinct/ig, '!==')
                 .replace(/equal/ig, '===')
                 .replace(/!/g, '!');
-            // Evaluate the expression using eval (Note: Using eval can be unsafe with untrusted input)
-            return this.evaluate(data, expression);
+            // Evaluate the expression using, this can be unsafe with untrusted input
+            return this.evaluate(expression, data);
         }
         catch (error) {
             opt.error = error;
@@ -33,12 +37,24 @@ class SimpleEval {
         }
     }
 
-    evaluate(scope, script, opt) {
-        const cont = this.destructuring(scope);
+    /**
+     * @description Evaluate JavaScript native expressions based on opt.target
+     * @param {String} script 
+     * @param {Object} scope 
+     * @param {Object} opt 
+     * @returns {*} result
+     */
+    evaluate(script, scope = {}, opt = null) {
+        const cont = opt?.destructuring || opt?.destructuring === undefined ? this.destructuring(scope) : "";
         const body = '"use strict"; ' + cont + ' return (' + script + ')';
-        return opt?.mode === "eval" ? eval(body) : new Function(body).bind(scope)();
+        return opt?.target === "eval" ? eval(body) : (new Function(body).bind(scope)());
     }
 
+    /**
+     * @description Create a destructuring script in string format
+     * @param {Object} scope 
+     * @returns {String} destructuring script
+     */
     destructuring(scope) {
         if (!scope || typeof (scope) !== "object") {
             return "";
@@ -50,6 +66,12 @@ class SimpleEval {
         return code;
     }
 
+    /**
+     * @description Interpolate all attributes values from the data object
+     * @param {String} expression 
+     * @param {Object} data 
+     * @returns {String} expression
+     */
     interpolate(expression, data) {
         for (let i in data) {
             let val = data[i];
