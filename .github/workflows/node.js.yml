@@ -36,8 +36,11 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     steps: 
-      - name: Publish to npm
-        uses: JS-DevTools/npm-publish@v1
-        run: npm publish
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      - name: checkout
+        uses: actions/checkout@v2.1.1
+      - name: node
+        uses: actions/setup-node@v1.4.2
+      - name: publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
