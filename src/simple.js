@@ -1,5 +1,5 @@
 /**
- * @description allow inheritance based on imitation
+ * @description Evaluate JavaScript native expressions 
  * @param {String} expression 
  * @param {Object} data 
  * @returns {Boolean} result
@@ -21,6 +21,8 @@ function run(expression, data, out = {}) {
             .replace(/NOT/ig, '!')
             .replace(/AND/ig, '&&')
             .replace(/OR/ig, '||')
+            .replace(/distinct/ig, '!==')
+            .replace(/equal/ig, '===')
             .replace(/!/g, '!');
         // Evaluate the expression using eval (Note: Using eval can be unsafe with untrusted input)
         return eval(expression);

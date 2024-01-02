@@ -21,9 +21,9 @@ describe('Simple Expression Evaluator', () => {
             membershipStatus: 'Regular',
         }
         expect(lib.simple).toBeInstanceOf(Object);
-        expect(lib.simple.run("age > 18 AND membershipStatus === 'Regular'", data)).toBe(true);
-        expect(lib.simple.run("age > 30 OR membershipStatus === 'Premium'", data)).toBe(false);
-        expect(lib.simple.run("NOT(age <= 18 OR membershipStatus === 'Premium')", data)).toBe(true);
+        expect(lib.simple.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data)).toBe(true);
+        expect(lib.simple.run("age > 30 OR membershipStatus EQUAL 'Premium'", data)).toBe(false);
+        expect(lib.simple.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data)).toBe(true);
         done();
     });
 });
