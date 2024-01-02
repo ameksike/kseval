@@ -1,2 +1,1 @@
-# kseval
-Ksike Expression Evaluator
+# Ksike Expression Evaluator

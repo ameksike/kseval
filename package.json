@@ -1,0 +1,36 @@
+{
+  "name": "kseval",
+  "version": "1.0.0",
+  "description": "Ksike Expression Evaluator",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "publish": "npm login && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ameksike/kseval.git"
+  },
+  "keywords": [
+    "expression",
+    "evaluator",
+    "parser",
+    "logic",
+    "math",
+    "Ksike"
+  ],
+  "author": {
+    "name": "Antonio Membrides Espinosa",
+    "email": "tonykssa@gmail.com",
+    "url": "https://github.com/ameksike"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ameksike/kseval/issues"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  },
+  "homepage": "https://github.com/ameksike/kseval#readme"
+}
