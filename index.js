@@ -1,4 +1,8 @@
+const SimpleEval = require('./src/simple');
+const simple = new SimpleEval();
+simple.Cls = SimpleEval;
+
 module.exports = {
-    simple: require('./src/simple'),
-    parser: require('./src/parser')
+    parser: require('./src/parser'),
+    simple
 }
