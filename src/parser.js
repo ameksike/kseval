@@ -1,51 +1,109 @@
-// Function to evaluate logical expressions in text form without using eval
-function run(expression, data) {
-    const tokens = tokenize(expression);
-    const result = evaluateTokens(tokens, data);
-    return result;
-}
+class ParserEval {
 
-// Tokenize the logical expression into an array of tokens
-function tokenize(expression) {
-    return expression
-        .replace(/\s+/g, '') // Remove spaces
-        .match(/(?:\|\||&&|\(|\)|!|[a-zA-Z_]\w*|>=?|<=?|!==?|===?|'[^']*'|[0-9]+|.)/g) || [];
-}
+    constructor() {
+        this.index = 0;
+    }
 
-// Evaluate tokens using a simple recursive descent parser
-function evaluateTokens(tokens, data) {
-    let index = 0;
-
-    function parsePrimary() {
-        const token = tokens[index];
-
-        if (token === '(') {
-            index++;
-            const result = parseExpression();
-            /*if (tokens[index++] !== ')') {
-                throw new Error("Mismatched parentheses.");
-            }*/
+    /**
+     * @description Function to evaluate logical expressions in text form without using eval
+     * @param {String} expression 
+     * @param {Object} data 
+     * @returns {Boolean} result
+     */
+    run(expression, data, opt = {}) {
+        opt = opt || {};
+        opt.data = data;
+        opt.expression = expression;
+        try {
+            expression = this.sanitize(expression);
+            const tokens = this.tokenize(expression);
+            const result = this.evaluateTokens(tokens, data);
             return result;
-        } else if (token === '!') {
-            index++;
-            return !parsePrimary();
-        } else if (token.startsWith("'")) {
-            return token.slice(1, -1); // String literal
-        } else if (!isNaN(token)) {
-            return parseFloat(token); // Numeric literal
-        } else {
-            index++;
-            return data[token]; // Variable value
+        }
+        catch (error) {
+            opt.error = error;
+            return null;
         }
     }
 
-    function parseComparison() {
-        let left = parsePrimary();
-        let token = tokens[index];
+    /**
+     * @description Tokenize the logical expression into an array of tokens
+     * @param {String} expression 
+     * @returns {String} result
+     */
+    tokenize(expression) {
+        return expression
+            .replace(/\s+/g, '') // Remove spaces
+            .match(/(?:\|\||&&|\(|\)|!|[a-zA-Z_]\w*|>=?|<=?|!==?|===?|'[^']*'|[0-9]+|.)/g) || [];
+    }
+
+    /**
+     * @description Escaped and sanitized to prevent injection of malicious code through string manipulation.
+     * @param {String} expression 
+     * @returns {String} expression
+     */
+    sanitize(expression) {
+        return expression
+            // Replace logical operators for easier parsing
+            .replace(/&&/g, '&&')
+            .replace(/\|\|/g, '||')
+            .replace(/!/g, '!')
+            // add suport for new operatos 
+            .replace(/NOT/ig, '!')
+            .replace(/AND/ig, '&&')
+            .replace(/OR/ig, '||')
+            .replace(/distinct/ig, '!==')
+            .replace(/equal/ig, '===')
+            ;
+    }
+
+    /**
+     * @description Evaluate simple expresions 
+     * @param {Array} tokens 
+     * @param {Object} data 
+     * @returns {*} result
+     */
+    parsePrimary(tokens, data) {
+        const token = tokens[this.index];
+
+        if (token === '(') {
+            this.index++;
+            const result = this.parseExpression(tokens, data);
+            /* 
+                if (tokens[index++] !== ')') {
+                    throw new Error("Mismatched parentheses.");
+                } 
+            */
+            return result;
+        } else if (token === '!') {
+            this.index++;
+            return !this.parsePrimary(tokens, data);
+        } else if (token.startsWith("'")) {
+            // String literal
+            return token.slice(1, -1);
+        } else if (!isNaN(token)) {
+            // Numeric literal
+            return parseFloat(token);
+        } else {
+            // Variable value
+            this.index++;
+            return data[token];
+        }
+    }
+
+    /**
+     * @description Evaluate comparative expresions 
+     * @param {Array} tokens 
+     * @param {Object} data 
+     * @returns {*} result
+     */
+    parseComparison(tokens, data) {
+        let left = this.parsePrimary(tokens, data);
+        let token = tokens[this.index];
 
         while (token === '>=' || token === '<=' || token === '>' || token === '<' || token === '===' || token === '!==') {
-            index++;
-            const right = parsePrimary();
+            this.index++;
+            const right = this.parsePrimary(tokens, data);
 
             switch (token) {
                 case '>=': left = left >= right; break;
@@ -56,19 +114,25 @@ function evaluateTokens(tokens, data) {
                 case '!==': left = left !== right; break;
             }
 
-            token = tokens[index];
+            token = tokens[this.index];
         }
 
         return left;
     }
 
-    function parseExpression() {
-        let left = parseComparison();
-        let token = tokens[index];
+    /**
+     * @description Evaluate complex expresions 
+     * @param {Array} tokens 
+     * @param {Object} data 
+     * @returns {*} result
+     */
+    parseExpression(tokens, data) {
+        let left = this.parseComparison(tokens, data);
+        let token = tokens[this.index];
 
         while (token === '&&' || token === '||') {
-            index++;
-            const right = parseComparison();
+            this.index++;
+            const right = this.parseComparison(tokens, data);
 
             if (token === '&&') {
                 left = left && right;
@@ -76,16 +140,22 @@ function evaluateTokens(tokens, data) {
                 left = left || right;
             }
 
-            token = tokens[index];
+            token = tokens[this.index];
         }
 
         return left;
     }
 
-    return parseExpression();
+    /**
+     * @description Evaluate tokens using a simple recursive descent parser
+     * @param {Array} tokens 
+     * @param {Object} data 
+     * @returns {Boolean} result
+     */
+    evaluateTokens(tokens, data) {
+        this.index = 0;
+        return this.parseExpression(tokens, data);
+    }
 }
 
-module.exports = {
-    tokenize,
-    run
-};
+module.exports = ParserEval;
