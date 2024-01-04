@@ -52,14 +52,19 @@ class NativeEval {
     sanitize(expression) {
         return expression
             // Replace logical operators for easier parsing
-            .replace(/&&/g, '&&')
-            .replace(/\|\|/g, '||')
-            .replace(/!/g, '!')
+            .replace(/funtion/ig, '')
+            .replace(/=>/g, '>=')
+            .replace(/=</g, '<=')
             // add suport for new operatos 
             .replace(/NOT/ig, '!')
             .replace(/AND/ig, '&&')
             .replace(/OR/ig, '||')
+            .replace(/less than equal/ig, '<=')
+            .replace(/less than/ig, '<')
+            .replace(/greater than equal/ig, '>=')
+            .replace(/greater than/ig, '>')
             .replace(/distinct/ig, '!==')
+            .replace(/different/ig, '!==')
             .replace(/equal/ig, '===')
             ;
     }

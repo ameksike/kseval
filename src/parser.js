@@ -44,16 +44,14 @@ class ParserEval {
      */
     sanitize(expression) {
         return expression
-            // Replace logical operators for easier parsing
-            .replace(/&&/g, '&&')
-            .replace(/\|\|/g, '||')
-            .replace(/!/g, '!')
             // add suport for new operatos 
             .replace(/NOT/ig, '!')
             .replace(/AND/ig, '&&')
             .replace(/OR/ig, '||')
             .replace(/distinct/ig, '!==')
             .replace(/equal/ig, '===')
+            .replace(/less Than/ig, '<')
+            .replace(/greater Than/ig, '>')
             ;
     }
 
