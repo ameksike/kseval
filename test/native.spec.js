@@ -91,13 +91,22 @@ describe('Native Expression Evaluator', () => {
     });
 
     it("Format actions by param", () => {
-        expect(lib.native.run("age > 18 AND age MYEQUAL VL", data, {
+        const opt = {
             format(expression, data, opt) {
+                // Add support for new keywords and constants
                 expression = expression.replace(/VL/ig, data.age);
                 expression = expression.replace(/MYEQUAL/ig, "==");
+                // Adding support for new methods
+                data.MUL = (...numbers) => numbers.reduce((acc, num) => acc * num, 1);
                 return { expression, data, opt };
             }
-        })).toBe(true);
+        };
+
+        expect(lib.native.run("age > 18 AND age MYEQUAL VL", data, opt)).toBe(true);
+        expect(lib.native.run("MUL(...lst)", data, opt)).toBe(210);
+        expect(lib.native.run("MUL(5,6,7,1)", null, opt)).toBe(210);
+        expect(lib.native.run("MUL(5,6,7,1)")).toBe(null);
+        expect(lib.native.run("SUM(5, 6, 7, 1)", null, opt)).toBe(null);
     });
 
     it("Format actions by inheritance", () => {
@@ -117,6 +126,7 @@ describe('Native Expression Evaluator', () => {
         expect(myPrs.run("age > 18 AND age MYEQUAL VL", data)).toBe(true);
         expect(myPrs.run("MUL(...lst)", data)).toBe(210);
         expect(myPrs.run("MUL(5,6,7,1)", data)).toBe(210);
+        expect(myPrs.run("SUM(5, 6, 7, 1)")).toBe(null);
     });
 
     it("Sanitize", () => {

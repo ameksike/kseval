@@ -73,8 +73,10 @@ const opt = {
 };
 console.log(
     kseval.native.run("age > 18 AND age MYEQUAL VL", data, opt) === true,
-    kseval.native.run("MUL(...lst)", data) === 210,
-    kseval.native.run("MUL(5,6,7,1)") === 210,
+    kseval.native.run("MUL(...lst)", data, opt) === 210,
+    kseval.native.run("MUL(5,6,7,1)", null, opt) === 210,
+    kseval.native.run("MUL(5,6,7,1)") === null,
+    kseval.native.run("SUM(5,6,7,1)", null, opt) === null,
 )
 ```
 
@@ -97,6 +99,7 @@ console.log(
     myPrs.run("age > 18 AND age MYEQUAL VL", data) === true,
     myPrs.run("MUL(...lst)", data) === 210,
     myPrs.run("MUL(5,6,7,1)") === 210,
+    myPrs.run("SUM(5, 6, 7, 1)") === null,
 )
 ```
 

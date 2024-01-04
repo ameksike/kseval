@@ -14,6 +14,10 @@ class NativeEval {
      * @returns {Boolean|Number|String|null} result
      */
     run(expression, data, opt = {}) {
+        if (!expression) {
+            return null;
+        }
+        data = data || {};
         opt = opt || {};
         opt.data = data;
         opt.expression = expression;
@@ -21,8 +25,8 @@ class NativeEval {
             const format = opt?.format || this.format;
             if (format instanceof Function) {
                 const res = format.apply(this, [expression, data, opt]);
-                expression = res.expression;
-                data = res.data;
+                res?.expression && (expression = res.expression);
+                res?.data && (data = res.data);
             }
             opt?.interpolate && (expression = this.interpolate(expression, data));
             expression = this.sanitize(expression);
