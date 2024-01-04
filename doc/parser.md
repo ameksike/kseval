@@ -8,22 +8,22 @@ const kseval = require ("kseval");
 ```js
 const data = {
     age: 25,
-    membershipStatus: 'Regular',
+    status: 'Regular',
 }
 ```
 
 ```js
 console.log(
-    kseval.parser.run("age > 18 && membershipStatus === 'Regular'", data) === true,
-    kseval.parser.run("age > 30 || membershipStatus === 'Premium'", data) === false,
-    kseval.parser.run("!(age <= 18 || membershipStatus === 'Premium')", data) === true,
+    kseval.parser.run("age > 18 && status === 'Regular'", data) === true,
+    kseval.parser.run("age > 30 || status === 'Premium'", data) === false,
+    kseval.parser.run("!(age <= 18 || status === 'Premium')", data) === true,
 );
 ```
 
 ```js
 console.log(
-    kseval.parser.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data) === true,
-    kseval.parser.run("age > 30 OR membershipStatus EQUAL 'Premium'", data) === false,
-    kseval.parser.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data) === true,
+    kseval.parser.run("age > 18 AND status DISTINCT 'Premium'", data) === true,
+    kseval.parser.run("age > 30 OR status EQUAL 'Premium'", data) === false,
+    kseval.parser.run("NOT(age <= 18 OR status EQUAL 'Premium')", data) === true,
 );
 ```

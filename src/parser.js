@@ -8,7 +8,7 @@ class ParserEval {
      * @description Function to evaluate logical expressions in text form without using eval
      * @param {String} expression 
      * @param {Object} data 
-     * @returns {Boolean} result
+     * @returns {Boolean|Number|String|null} result
      */
     run(expression, data, opt = {}) {
         opt = opt || {};
@@ -45,15 +45,21 @@ class ParserEval {
     sanitize(expression) {
         return expression
             // Replace logical operators for easier parsing
-            .replace(/&&/g, '&&')
-            .replace(/\|\|/g, '||')
-            .replace(/!/g, '!')
+            .replace(/\bnew\b|\bfunction\b|\bObject\b|\bPromise\b|\beval\b|\bReflect\b|\bProxy\b/ig, '')
+            .replace(/=>/g, '>=')
+            .replace(/=</g, '<=')
+
             // add suport for new operatos 
-            .replace(/NOT/ig, '!')
-            .replace(/AND/ig, '&&')
-            .replace(/OR/ig, '||')
-            .replace(/distinct/ig, '!==')
-            .replace(/equal/ig, '===')
+            .replace(/\bNOT\b/ig, '!')
+            .replace(/\bAND\b/ig, '&&')
+            .replace(/\bOR\b/ig, '||')
+            .replace(/\bless than equal\b/ig, '<=')
+            .replace(/\bless than\b/ig, '<')
+            .replace(/\bgreater than equal\b/ig, '>=')
+            .replace(/\bgreater than\b/ig, '>')
+            .replace(/\bdistinct\b/ig, '!==')
+            .replace(/\bdifferent\b/ig, '!==')
+            .replace(/\bequal\b/ig, '===')
             ;
     }
 
