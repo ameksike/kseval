@@ -9,6 +9,7 @@ class NativeEval {
      * @param {Boolean} opt.interpolate DEFAULT [false]
      * @param {Boolean} opt.destructuring DEFAULT [true]
      * @param {String} opt.target DEFAULT [function], VALUES [function | eval]
+     * @param {Function} opt.format (expression: String, data: Object, opt: Object) = {expression: String, data: Object}
      * @returns {Boolean} result
      */
     run(expression, data, opt = {}) {
@@ -16,15 +17,31 @@ class NativeEval {
         opt.data = data;
         opt.expression = expression;
         try {
+            const format = opt?.format || this.format;
+            if (format instanceof Function) {
+                const res = format.apply(this, [expression, data, opt]);
+                expression = res.expression;
+                data = res.data;
+            }
             opt?.interpolate && (expression = this.interpolate(expression, data));
             expression = this.sanitize(expression);
-            // Evaluate the expression using, this can be unsafe with untrusted input
             return this.evaluate(expression, data);
         }
         catch (error) {
             opt.error = error;
             return null;
         }
+    }
+
+    /**
+     * 
+     * @param {String} expression 
+     * @param {Object} data 
+     * @param {Object} opt 
+     * @returns {Object} {expression: String, data: Object, opt: Object} 
+     */
+    format(expression, data, opt) {
+        return { expression, data, opt };
     }
 
     /**
