@@ -2,7 +2,7 @@
 When using eval for evaluating expressions, it's crucial to limit the set of operations to mitigate security risks. In this example, we'll define a specific set of allowed operations for logical, algebraic, and arithmetic expressions. This approach helps to restrict the set of operations and characters allowed in the expressions, reducing the risk of unintended or malicious code execution through eval. Always consider using dedicated expression parsing or evaluation libraries for more complex scenarios, as they are designed to handle expressions safely.
 
 ```js
-const kseval = require ("kseval",
+const kseval = require ("kseval");
 ```
 
 ### Demo Payload 
@@ -83,7 +83,7 @@ class MyPrs extends kseval.native.Cls {
     }
 }
 
-const myPrs = new MyPrs(,
+const myPrs = new MyPrs();
 
 console.log(
     myPrs.run("age > 18 AND age MYEQUAL VL", data) === true
