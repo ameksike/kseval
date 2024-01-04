@@ -1,4 +1,33 @@
 # Ksike Expression Evaluator
+KsEval is a versatile and powerful library for Node.js that empowers developers to dynamically evaluate arithmetic, algebraic, and logical expressions expressed in text format. This library excels in flexibility, allowing you to seamlessly interpolate data from objects and variables specified through parameters. MathEvalJS goes beyond simple expression evaluation by providing extensive customization options, enabling developers to define and overload functions for formatting, sanitizing, destructuring, and interpolating.
+
+### Expression Evaluation:
+
+- Evaluate arithmetic, algebraic, and logical expressions expressed in text.
+- Support for a wide range of mathematical and logical operators.
+- Dynamic Interpolation:
+
+### Interpolate data from objects and variables specified through parameters.
+- Facilitates dynamic data integration into expressions.
+- Customization Options:
+
+### Overload functions for custom formatting of input and output.
+- Define custom sanitization routines to enhance security.
+- Implement destructuring functions for handling complex data structures.
+- Enable dynamic definition of functions and keywords for enhanced expressiveness.
+
+### Flexibility and Extensibility:
+- Highly flexible to accommodate diverse use cases.
+- Easily extendable with dynamic function and keyword definitions.
+
+
+Explore the possibilities of dynamic expression evaluation with KsEval, where flexibility meets efficiency for all your mathematical and logical computation needs.
+
+- [Native Expression Evaluator.](doc/native.md) 
+- [Parser Expression Evaluator](doc/parser.md)
+
+
+## Quick overview
 
 ```
 npm install kseval
@@ -81,7 +110,3 @@ console.log(
     myPrs.run("age > 18 AND age MYEQUAL VL", data) === true
 );
 ```
-
-## Quick overview
-- [Native Expression Evaluator.](doc/native.md)
-- [Parser Expression Evaluator](doc/parser.md)
