@@ -1,3 +1,4 @@
+const utl = require('./utl');
 class NativeEval {
 
     /**
@@ -41,7 +42,7 @@ class NativeEval {
      * @returns {Object} {expression: String, data: Object, opt: Object} 
      */
     format(expression, data, opt) {
-        return { expression, data, opt };
+        return { expression, data: { ...data, ...utl }, opt };
     }
 
     /**
@@ -55,7 +56,7 @@ class NativeEval {
             .replace(/\bnew\b|\bfunction\b|\bObject\b|\bPromise\b|\beval\b|\bReflect\b|\bProxy\b/ig, '')
             .replace(/=>/g, '>=')
             .replace(/=</g, '<=')
-            
+
             // add suport for new operatos 
             .replace(/\bNOT\b/ig, '!')
             .replace(/\bAND\b/ig, '&&')

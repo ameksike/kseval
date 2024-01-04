@@ -69,7 +69,7 @@ const opt = {
     }
 };
 console.log(
-    lib.native.run("age > 18 AND age MYEQUAL VL", data, opt) === true
+    kseval.native.run("age > 18 AND age MYEQUAL VL", data, opt) === true
 )
 ```
 
@@ -95,7 +95,7 @@ console.log(
 const out = {};
 
 console.log(
-    lib.native.run("age > 18 AND demo.code EQUAL 'US'", data, out) === null,
+    kseval.native.run("age > 18 AND demo.code EQUAL 'US'", data, out) === null,
 
     out.error.message === "demo is not defined",
     out.expression === "age > 18 AND demo.code EQUAL 'US'",
@@ -106,12 +106,23 @@ console.log(
 ## Math and Arithmetic expressions
 ```js
 console.log(
-    lib.native.run("age + 25", data) === 50,
-    lib.native.run("Math.abs(-age)", data) === 25,
-    lib.native.run("Math.min(5,9,7,3)", data) === 3,
-    lib.native.run("25 + 1 / 1 + 2", data) === 28,
-    lib.native.run("(25 + 1) / (1 + 2)", data) === 8.666666666666666,
-    lib.native.run("++age", data) === 26,
+    kseval.native.run("age + 25", data) === 50,
+    kseval.native.run("25 + 1 / 1 + 2", data) === 28,
+    kseval.native.run("(25 + 1) / (1 + 2)", data) === 8.666666666666666,
+    
+    kseval.native.run("++age", data) === 26,
+    kseval.native.run("--age", data) === 24,
+
+    kseval.native.run("Math.abs(-age)", data) === 25,
+    kseval.native.run("Math.min(...lst)", data) === 1,
+
+    kseval.native.run("ABS(age * -1)", data) === 25,
+    kseval.native.run("MIN(lst)", data) === 1,
+    kseval.native.run("MIN(5, 6, 7, 1)") === 1,
+    kseval.native.run("MAX(lst)", data) === 7,
+    kseval.native.run("MAX(5, 6, 7, 1)") === 7,
+    kseval.native.run("AVG(lst)", data) === 4.75,
+    kseval.native.run("AVG(5, 6, 7, 1)") === 4.75,
 )
 ```
 

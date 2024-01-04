@@ -8,7 +8,7 @@ const data = {
         code: "ES",
         name: "Spain"
     },
-    lst: [5,6,7]
+    lst: [5, 6, 7, 1]
 };
 
 describe('Native Expression Evaluator', () => {
@@ -50,7 +50,7 @@ describe('Native Expression Evaluator', () => {
         expect(lib.native.sanitize("1 GREATER THAN 1")).toBe("1 > 1");
         expect(lib.native.sanitize("1 GREATER THAN EQUAL 1")).toBe("1 >= 1");
     });
-    
+
     it("Object attributes", () => {
         expect(lib.native.run("age EQUAL 25", data)).toBe(true);
         expect(lib.native.run("contry.code EQUAL 'ES'", data)).toBe(true);
@@ -63,11 +63,22 @@ describe('Native Expression Evaluator', () => {
 
     it("Math and Arithmetic expressions", () => {
         expect(lib.native.run("age + 25", data)).toBe(50);
-        expect(lib.native.run("Math.abs(-age)", data)).toBe(25);
-        expect(lib.native.run("Math.min(5,9,7,3)", data)).toBe(3);
         expect(lib.native.run("25 + 1 / 1 + 2", data)).toBe(28);
         expect(lib.native.run("(25 + 1) / (1 + 2)", data)).toBe(8.666666666666666);
+        
         expect(lib.native.run("++age", data)).toBe(26);
+        expect(lib.native.run("--age", data)).toBe(24);
+
+        expect(lib.native.run("Math.abs(-age)", data)).toBe(25);
+        expect(lib.native.run("Math.min(...lst)", data)).toBe(1);
+
+        expect(lib.native.run("ABS(age * -1)", data)).toBe(25);
+        expect(lib.native.run("MIN(lst)", data)).toBe(1);
+        expect(lib.native.run("MIN(5, 6, 7, 1)")).toBe(1);
+        expect(lib.native.run("MAX(lst)", data)).toBe(7);
+        expect(lib.native.run("MAX(5, 6, 7, 1)")).toBe(7);
+        expect(lib.native.run("AVG(lst)", data)).toBe(4.75);
+        expect(lib.native.run("AVG(5, 6, 7, 1)")).toBe(4.75);
     });
 
     it("Format actions by param", () => {
