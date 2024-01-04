@@ -10,7 +10,7 @@ class NativeEval {
      * @param {Boolean} opt.destructuring DEFAULT [true]
      * @param {String} opt.target DEFAULT [function], VALUES [function | eval]
      * @param {Function} opt.format (expression: String, data: Object, opt: Object) = {expression: String, data: Object}
-     * @returns {Boolean} result
+     * @returns {Boolean|Number|String|null} result
      */
     run(expression, data, opt = {}) {
         opt = opt || {};
@@ -52,20 +52,21 @@ class NativeEval {
     sanitize(expression) {
         return expression
             // Replace logical operators for easier parsing
-            .replace(/funtion/ig, '')
+            .replace(/\bnew\b|\bfunction\b|\bObject\b|\bPromise\b|\beval\b|\bReflect\b|\bProxy\b/ig, '')
             .replace(/=>/g, '>=')
             .replace(/=</g, '<=')
+            
             // add suport for new operatos 
-            .replace(/NOT/ig, '!')
-            .replace(/AND/ig, '&&')
-            .replace(/OR/ig, '||')
-            .replace(/less than equal/ig, '<=')
-            .replace(/less than/ig, '<')
-            .replace(/greater than equal/ig, '>=')
-            .replace(/greater than/ig, '>')
-            .replace(/distinct/ig, '!==')
-            .replace(/different/ig, '!==')
-            .replace(/equal/ig, '===')
+            .replace(/\bNOT\b/ig, '!')
+            .replace(/\bAND\b/ig, '&&')
+            .replace(/\bOR\b/ig, '||')
+            .replace(/\bless than equal\b/ig, '<=')
+            .replace(/\bless than\b/ig, '<')
+            .replace(/\bgreater than equal\b/ig, '>=')
+            .replace(/\bgreater than\b/ig, '>')
+            .replace(/\bdistinct\b/ig, '!==')
+            .replace(/\bdifferent\b/ig, '!==')
+            .replace(/\bequal\b/ig, '===')
             ;
     }
 
