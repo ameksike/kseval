@@ -63,8 +63,8 @@ console.log(
 ```js
 const opt = {
     format(expression, data, opt) {
-        expression = expression.replace(/VL/ig, data.age,
-        expression = expression.replace(/MYEQUAL/ig, "==",
+        expression = expression.replace(/VL/ig, data.age);
+        expression = expression.replace(/MYEQUAL/ig, "==");
         return { expression, data, opt };
     }
 };
@@ -77,8 +77,8 @@ console.log(
 ```js
 class MyPrs extends kseval.native.Cls {
     format(expression, data, opt) {
-        expression = expression.replace(/VL/ig, data.age,
-        expression = expression.replace(/MYEQUAL/ig, "==",
+        expression = expression.replace(/VL/ig, data.age);
+        expression = expression.replace(/MYEQUAL/ig, "==");
         return { expression, data, opt };
     }
 }
