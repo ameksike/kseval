@@ -22,9 +22,7 @@ const data = {
 ```js
 console.log(
     kseval.native.run("age === 25", data) === true,
-
     kseval.native.run("contry.code === 'ES'", data) === true,
-
     kseval.native.run("lst.includes(5)", data) === true,
 )
 ```
