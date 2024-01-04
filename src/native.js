@@ -1,4 +1,4 @@
-class SimpleEval {
+class NativeEval {
 
     /**
      * @description Evaluate JavaScript native expressions 
@@ -55,9 +55,15 @@ class SimpleEval {
      * @returns {*} result
      */
     evaluate(script, scope = {}, opt = null) {
-        const cont = opt?.destructuring || opt?.destructuring === undefined ? this.destructuring(scope) : "";
-        const body = '"use strict"; ' + cont + ' return (' + script + ')';
-        return opt?.target === "eval" ? eval(body) : (new Function(body).bind(scope)());
+        if (!script) {
+            return null;
+        }
+        scope = scope || {};
+        const fnHeader = opt?.destructuring ? this.destructuring(scope) : "";
+        const fnBody = '"use strict"; ' + fnHeader + ' return (' + script + ')';
+        const fnParamName = Object.keys(scope).join(',');
+        const fnParamValue = Object.values(scope);
+        return opt?.target === "eval" ? eval(fnBody) : (new Function(fnParamName, fnBody).bind(scope)(...fnParamValue));
     }
 
     /**
@@ -92,4 +98,4 @@ class SimpleEval {
     }
 }
 
-module.exports = SimpleEval;
+module.exports = NativeEval;
