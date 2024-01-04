@@ -117,12 +117,21 @@ console.log(
     kseval.native.run("Math.min(...lst)", data) === 1,
 
     kseval.native.run("ABS(age * -1)", data) === 25,
+
     kseval.native.run("MIN(lst)", data) === 1,
     kseval.native.run("MIN(5, 6, 7, 1)") === 1,
+
     kseval.native.run("MAX(lst)", data) === 7,
     kseval.native.run("MAX(5, 6, 7, 1)") === 7,
+
     kseval.native.run("AVG(lst)", data) === 4.75,
     kseval.native.run("AVG(5, 6, 7, 1)") === 4.75,
+
+    kseval.native.run("SUM(lst)", data) === 19,
+    kseval.native.run("SUM(5, 6, 7, 1)") === 19,
+
+    kseval.native.run("SUB(lst)", data) === -9,
+    kseval.native.run("SUB(5, 6, 7, 1)") === -9,
 )
 ```
 

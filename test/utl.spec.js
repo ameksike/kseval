@@ -23,6 +23,18 @@ describe('UTL', () => {
         done();
     });
 
+    it("SUM", (done) => {
+        expect(lib.SUM(...lst)).toBe(19);
+        expect(lib.SUM(lst)).toBe(19);
+        done();
+    });
+
+    it("SUB", (done) => {
+        expect(lib.SUB(...lst)).toBe(-9);
+        expect(lib.SUB(lst)).toBe(-9);
+        done();
+    });
+
     it("ABS", (done) => {
         expect(lib.ABS(-5)).toBe(5);
         expect(lib.ABS(5)).toBe(5);

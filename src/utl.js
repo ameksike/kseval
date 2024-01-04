@@ -19,11 +19,29 @@ function AVG(...args) {
     if (!Array.isArray(numbers) || numbers.length === 0) {
         throw new Error('AVG: Input should be a non-empty array of numbers');
     }
-    const sum = numbers.reduce((acc, num) => acc + num, 0);
+    const sum = SUM(numbers);
     return sum / numbers.length;
 }
 
+function SUM() {
+    let numbers = Array.isArray(arguments[0]) ? arguments[0] : Array.from(arguments);
+    if (!Array.isArray(numbers) || numbers.length === 0) {
+        throw new Error('SUM: Input should be a non-empty array of numbers');
+    }
+    return numbers.reduce((acc, num) => acc + num, 0);
+}
+
+function SUB() {
+    let numbers = Array.isArray(arguments[0]) ? arguments[0] : Array.from(arguments);
+    if (!Array.isArray(numbers) || numbers.length === 0) {
+        throw new Error('SUB: Input should be a non-empty array of numbers');
+    }
+    return numbers.reduce((acc, num) => acc - num);
+}
+
 module.exports = {
+    SUM,
+    SUB,
     AVG,
     MIN,
     MAX,
