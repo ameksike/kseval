@@ -1,12 +1,25 @@
-const SimpleEval = require('./src/simple');
-const simple = new SimpleEval();
-simple.Cls = SimpleEval;
+const path = require('path');
 
-const ParserEval = require('./src/parser');
-const parser = new ParserEval();
-parser.Cls = ParserEval;
-
-module.exports = {
-    parser,
-    simple
+/**
+ * @description Factory method to get a certain processor by name
+ * @param {String} name 
+ * @param {Array} params 
+ * @returns {Object} instance
+ */
+function get(name, params = []) {
+    try {
+        const Cls = require(path.join(__dirname, 'src/', name));
+        const obj = new Cls(...params);
+        obj.Cls = Cls;
+        return obj;
+    }
+    catch (error) {
+        return null;
+    }
 }
+
+module.exports = new Proxy({ get }, {
+    get(target, prop) {
+        return target.hasOwnProperty(prop) ? Reflect.get(...arguments) : get(prop);
+    }
+});

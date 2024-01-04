@@ -19,22 +19,22 @@ const data = {
 
 ```js
 console.log(
-    kseval.simple.run("age > 18 && membershipStatus === 'Regular'", data) === true,
-    kseval.simple.run("age > 30 || membershipStatus === 'Premium'", data) === false,
-    kseval.simple.run("!(age <= 18 || membershipStatus === 'Premium')", data) === true,
+    kseval.native.run("age > 18 && membershipStatus === 'Regular'", data) === true,
+    kseval.native.run("age > 30 || membershipStatus === 'Premium'", data) === false,
+    kseval.native.run("!(age <= 18 || membershipStatus === 'Premium')", data) === true,
 );
 ```
 
 ```js
 console.log(
-    kseval.simple.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data) === true,
-    kseval.simple.run("age > 30 OR membershipStatus EQUAL 'Premium'", data) === false,
-    kseval.simple.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data) === true,
+    kseval.native.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data) === true,
+    kseval.native.run("age > 30 OR membershipStatus EQUAL 'Premium'", data) === false,
+    kseval.native.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data) === true,
 );
 ```
 
 ## Quick overview
-- [Simple Expression Evaluator.](doc/simple.md)
+- [Native Expression Evaluator.](doc/native.md)
 - [Parser Expression Evaluator](doc/parser.md)
 
 

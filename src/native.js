@@ -1,4 +1,4 @@
-class SimpleEval {
+class NativeEval {
 
     /**
      * @description Evaluate JavaScript native expressions 
@@ -9,6 +9,7 @@ class SimpleEval {
      * @param {Boolean} opt.interpolate DEFAULT [false]
      * @param {Boolean} opt.destructuring DEFAULT [true]
      * @param {String} opt.target DEFAULT [function], VALUES [function | eval]
+     * @param {Function} opt.format (expression: String, data: Object, opt: Object) = {expression: String, data: Object}
      * @returns {Boolean} result
      */
     run(expression, data, opt = {}) {
@@ -16,15 +17,31 @@ class SimpleEval {
         opt.data = data;
         opt.expression = expression;
         try {
+            const format = opt?.format || this.format;
+            if (format instanceof Function) {
+                const res = format.apply(this, [expression, data, opt]);
+                expression = res.expression;
+                data = res.data;
+            }
             opt?.interpolate && (expression = this.interpolate(expression, data));
             expression = this.sanitize(expression);
-            // Evaluate the expression using, this can be unsafe with untrusted input
             return this.evaluate(expression, data);
         }
         catch (error) {
             opt.error = error;
             return null;
         }
+    }
+
+    /**
+     * 
+     * @param {String} expression 
+     * @param {Object} data 
+     * @param {Object} opt 
+     * @returns {Object} {expression: String, data: Object, opt: Object} 
+     */
+    format(expression, data, opt) {
+        return { expression, data, opt };
     }
 
     /**
@@ -55,9 +72,15 @@ class SimpleEval {
      * @returns {*} result
      */
     evaluate(script, scope = {}, opt = null) {
-        const cont = opt?.destructuring || opt?.destructuring === undefined ? this.destructuring(scope) : "";
-        const body = '"use strict"; ' + cont + ' return (' + script + ')';
-        return opt?.target === "eval" ? eval(body) : (new Function(body).bind(scope)());
+        if (!script) {
+            return null;
+        }
+        scope = scope || {};
+        const fnHeader = opt?.destructuring ? this.destructuring(scope) : "";
+        const fnBody = '"use strict"; ' + fnHeader + ' return (' + script + ')';
+        const fnParamName = Object.keys(scope).join(',');
+        const fnParamValue = Object.values(scope);
+        return opt?.target === "eval" ? eval(fnBody) : (new Function(fnParamName, fnBody).bind(scope)(...fnParamValue));
     }
 
     /**
@@ -92,4 +115,4 @@ class SimpleEval {
     }
 }
 
-module.exports = SimpleEval;
+module.exports = NativeEval;

@@ -1,16 +1,16 @@
 
-const lib = require('../');
+const lib = require('..');
 
-describe('Simple Expression Evaluator', () => {
+describe('Native Expression Evaluator', () => {
 
     it("Common", (done) => {
         const data = {
             age: 25,
             membershipStatus: 'Regular',
         }
-        expect(lib.simple.run("age > 18 && membershipStatus === 'Regular'", data)).toBe(true);
-        expect(lib.simple.run("age > 30 || membershipStatus === 'Premium'", data)).toBe(false);
-        expect(lib.simple.run("!(age <= 18 || membershipStatus === 'Premium')", data)).toBe(true);
+        expect(lib.native.run("age > 18 && membershipStatus === 'Regular'", data)).toBe(true);
+        expect(lib.native.run("age > 30 || membershipStatus === 'Premium'", data)).toBe(false);
+        expect(lib.native.run("!(age <= 18 || membershipStatus === 'Premium')", data)).toBe(true);
         done();
     });
 
@@ -19,9 +19,9 @@ describe('Simple Expression Evaluator', () => {
             age: 25,
             membershipStatus: 'Regular',
         }
-        expect(lib.simple.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data)).toBe(true);
-        expect(lib.simple.run("age > 30 OR membershipStatus EQUAL 'Premium'", data)).toBe(false);
-        expect(lib.simple.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data)).toBe(true);
+        expect(lib.native.run("age > 18 AND membershipStatus DISTINCT 'Premium'", data)).toBe(true);
+        expect(lib.native.run("age > 30 OR membershipStatus EQUAL 'Premium'", data)).toBe(false);
+        expect(lib.native.run("NOT(age <= 18 OR membershipStatus EQUAL 'Premium')", data)).toBe(true);
         done();
     });
 
@@ -33,9 +33,9 @@ describe('Simple Expression Evaluator', () => {
                 name: "Spain"
             }
         }
-        expect(lib.simple.run("age > 18 AND contry.code DISTINCT 'US'", data)).toBe(true);
-        expect(lib.simple.run("age > 18 AND contry.demo EQUAL 'US'", data)).toBe(false);
-        expect(lib.simple.run("age > 18 AND demo.code EQUAL 'US'", data)).toBe(null);
+        expect(lib.native.run("age > 18 AND contry.code DISTINCT 'US'", data)).toBe(true);
+        expect(lib.native.run("age > 18 AND contry.demo EQUAL 'US'", data)).toBe(false);
+        expect(lib.native.run("age > 18 AND demo.code EQUAL 'US'", data)).toBe(null);
         done();
     });
 
@@ -49,7 +49,7 @@ describe('Simple Expression Evaluator', () => {
         }
         const rule = "age > 18 AND demo.code EQUAL 'US'";
         const ops = {};
-        const result = lib.simple.run(rule, data, ops);
+        const result = lib.native.run(rule, data, ops);
         expect(result).toBe(null);
         expect(ops.data.age).toBe(data.age);
         expect(ops.data.contry.code).toBe(data.contry.code);
