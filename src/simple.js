@@ -23,7 +23,6 @@ class SimpleEval {
         }
         catch (error) {
             opt.error = error;
-            console.log(error);
             return null;
         }
     }
