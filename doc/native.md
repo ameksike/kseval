@@ -103,6 +103,30 @@ console.log(
 )
 ```
 
+## Format customization by inheritance in addition to the parent behavior
+```js
+class MyPrs extends kseval.native.Cls {
+    format(expression, data, opt) {
+        // Add support for new keywords and constants
+        expression = expression.replace(/VL/ig, data.age);
+        expression = expression.replace(/MYEQUAL/ig, "==");
+        // Adding support for new methods
+        data.MUL = (...numbers) => numbers.reduce((acc, num) => acc * num, 1);
+        return super.format(expression, data, opt);
+    }
+}
+
+const myPrs = new MyPrs();
+
+console.log(
+    myPrs.run("age > 18 AND age MYEQUAL VL", data) === true,
+    myPrs.run("MUL(...lst)", data) === 210,
+    myPrs.run("MUL(5,6,7,1)") === 210,
+    myPrs.run("SUM(5, 6, 7, 1)") === 19,
+)
+```
+
+
 ## Error control
 ```js
 const out = {};
