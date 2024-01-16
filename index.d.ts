@@ -27,4 +27,12 @@ export interface ParserEval extends Evaluator {
     tokenize(expression: string): string[]
 }
 
-export function get(name: string, params: any[]): Evaluator | NativeEval | ParserEval;
+declare const KsEval: ProxyConstructor & {
+    native: NativeEval;
+    parser: ParserEval;
+    [name: string]: Evaluator | Function;
+
+    get(name: string, params?: any[]): Evaluator;
+};
+
+export default KsEval;
