@@ -1,8 +1,9 @@
 {
   "name": "kseval",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Ksike Expression Evaluator",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
