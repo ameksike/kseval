@@ -1,6 +1,13 @@
-class ParserEval {
+const Evaluator = require('./evaluator');
+
+/**
+ * @typedef {import('./types').TOptParser} TOptParser 
+ */
+
+class ParserEval extends Evaluator {
 
     constructor() {
+        super();
         this.index = 0;
     }
 
@@ -8,7 +15,8 @@ class ParserEval {
      * @description Function to evaluate logical expressions in text form without using eval
      * @param {String} expression 
      * @param {Object} data 
-     * @returns {Boolean|Number|String|null} result
+     * @param {TOptParser} [opt] 
+     * @returns {*} result
      */
     run(expression, data, opt = {}) {
         opt = opt || {};
@@ -29,7 +37,7 @@ class ParserEval {
     /**
      * @description Tokenize the logical expression into an array of tokens
      * @param {String} expression 
-     * @returns {String} result
+     * @returns {Array<String>} result
      */
     tokenize(expression) {
         return expression
