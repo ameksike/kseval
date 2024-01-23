@@ -1,17 +1,18 @@
 const utl = require('./utl');
-class NativeEval {
+const Evaluator = require('./evaluator');
+
+/**
+ * @typedef {import('./types').TOptNative} TOptNative 
+ */
+
+class NativeEval extends Evaluator {
 
     /**
      * @description Evaluate JavaScript native expressions 
      * @param {String} expression 
-     * @param {Object} data 
-     * @param {Object} opt 
-     * @param {Object} opt.error 
-     * @param {Boolean} opt.interpolate DEFAULT [false]
-     * @param {Boolean} opt.destructuring DEFAULT [true]
-     * @param {String} opt.target DEFAULT [function], VALUES [function | eval]
-     * @param {Function} opt.format (expression: String, data: Object, opt: Object) = {expression: String, data: Object}
-     * @returns {Boolean|Number|String|null} result
+     * @param {Object} [data] 
+     * @param {TOptNative} [opt] 
+     * @returns {*} result
      */
     run(expression, data, opt = {}) {
         if (!expression) {
@@ -39,7 +40,7 @@ class NativeEval {
     }
 
     /**
-     * 
+     * @description redefine all arguments 
      * @param {String} expression 
      * @param {Object} data 
      * @param {Object} opt 

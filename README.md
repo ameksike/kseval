@@ -1,7 +1,7 @@
 # Ksike Expression Evaluator
 KsEval is a versatile and powerful library for Node.js that empowers developers to dynamically evaluate arithmetic, algebraic, and logical expressions expressed in text format. This library excels in flexibility, allowing you to seamlessly interpolate data from objects and variables specified through parameters. MathEvalJS goes beyond simple expression evaluation by providing extensive customization options, enabling developers to define and overload functions for formatting, sanitizing, destructuring, and interpolating.
 
-This library belong to the Ksike ecosystem:
+This library belong to the **Ksike** ecosystem:
 - [KsMf](https://www.npmjs.com/package/ksmf) - Microframework (WEB, REST API, CLI, Proxy, etc)
 - [Ksdp](https://www.npmjs.com/package/ksdp) - Design Patterns Library (GoF, GRASP, IoC, DI, etc)
 - [KsCryp](https://www.npmjs.com/package/kscryp) - Cryptographic Library (RSA, JWT, x509, HEX, Base64, Hash, etc) 

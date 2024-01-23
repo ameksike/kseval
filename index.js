@@ -1,10 +1,22 @@
+/**
+ * @module kseval
+ */
+
 const path = require('path');
+const NativeEval = require('./src/native');
+const ParserEval = require('./src/parser');
+const Evaluator = require('./src/evaluator');
 
 /**
- * @description Factory method to get a certain processor by name
- * @param {String} name 
- * @param {Array} params 
- * @returns {Object} instance
+ * @typedef {import('./src/types').TKsEval} TKsEval 
+ */
+
+/**
+ * @description Factory method to get a certain processor by name.
+ * @template T
+ * @param {String} [name] - The class name.
+ * @param {any[]} [params] - An array of arguments to be passed to the class constructor.
+ * @returns {T} - An instance of the class.
  */
 function get(name, params = []) {
     try {
@@ -18,8 +30,29 @@ function get(name, params = []) {
     }
 }
 
-module.exports = new Proxy({ get }, {
-    get(target, prop) {
-        return target.hasOwnProperty(prop) ? Reflect.get(...arguments) : get(prop);
+/**
+ * @type {TKsEval}
+ */
+const KsEval = new Proxy(
+    {
+        get,
+        driver: {
+            NativeEval,
+            ParserEval,
+            Evaluator
+        }
+    },
+    {
+        get(target, prop, receiver) {
+            return target.hasOwnProperty(prop) || typeof prop !== 'string'
+                ? Reflect.get(target, prop, receiver)
+                : get(prop);
+        }
     }
-});
+);
+
+/**
+ * @type {TKsEval}
+ */
+module.exports = KsEval;
+
